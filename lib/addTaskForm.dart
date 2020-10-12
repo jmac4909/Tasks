@@ -1,3 +1,4 @@
+import 'package:Tasks/JMAC_form_builder_slider.dart' as JM;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
@@ -203,16 +204,15 @@ class _AddTaskFormState extends State<AddTaskForm> {
                       )
                     : Container()),
                 (showWorkload
-                    ? FormBuilderSlider(
-                        attribute: 'workload_hours',
-                        numberFormat: NumberFormat.currency(),
+                    ? JM.JMFormBuilderSlider(
+                        attribute: 'workload_minutues',
+                        displayValueAsTime: true,
                         decoration:
                             InputDecoration(labelText: "Estimated workload"),
-                        displayValues: DisplayValues.current,
-                        label: 'dollars',
-                        min: 0,
-                        max: 56,
-                        initialValue: 1.5,
+                        displayValues: JM.DisplayValues.current,
+                        min: 1,
+                        max: 300,
+                        initialValue: 35,
                       )
                     : Container()),
                 FormBuilderSegmentedControl(
@@ -254,7 +254,7 @@ class _AddTaskFormState extends State<AddTaskForm> {
                             description: value['desc_text'],
                             date: value['due_date'].toString(),
                             remindPref: value['reminder_pref'],
-                            workloadHours: value['workload_hours'],
+                            workloadMinutues: value['workload_minutues'],
                             priority: value['priority'],
                             completed: (value['completed_check'] != null &&
                                     value['completed_check']

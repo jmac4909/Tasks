@@ -50,7 +50,7 @@ class Task {
   final String description;
   final String date;
   final String remindPref;
-  final double workloadHours;
+  final double workloadMinutues;
   final int priority;
   int completed;
 
@@ -64,7 +64,7 @@ class Task {
     this.description,
     this.date,
     this.remindPref,
-    this.workloadHours,
+    this.workloadMinutues,
     this.priority,
     this.completed,
   });
@@ -80,7 +80,7 @@ class Task {
       'description': description,
       'date': date,
       'reminderPref': remindPref,
-      'workloadHours': workloadHours,
+      'workloadMinutues': workloadMinutues,
       'priority': priority,
       'completed': completed
     };
@@ -113,7 +113,7 @@ void startDB() async {
         "CREATE TABLE thing(id INTEGER PRIMARY KEY, categoryId INTEGER, title TEXT, description TEXT, FOREIGN KEY(categoryId) REFERENCES category(id))",
       );
       return await db.execute(
-        "CREATE TABLE task(id INTEGER PRIMARY KEY, categoryId INTEGER, thingId INTEGER, parentTaskId INTEGER, title TEXT, description TEXT, date TEXT, reminderPref TEXT, workloadHours REAL, priority INTEGER, completed INTEGER, isSubtask INTEGER, FOREIGN KEY(thingId) REFERENCES thing(id), FOREIGN KEY(categoryId) REFERENCES category(id), FOREIGN KEY(parentTaskId) REFERENCES task(id))",
+        "CREATE TABLE task(id INTEGER PRIMARY KEY, categoryId INTEGER, thingId INTEGER, parentTaskId INTEGER, title TEXT, description TEXT, date TEXT, reminderPref TEXT, workloadMinutues REAL, priority INTEGER, completed INTEGER, isSubtask INTEGER, FOREIGN KEY(thingId) REFERENCES thing(id), FOREIGN KEY(categoryId) REFERENCES category(id), FOREIGN KEY(parentTaskId) REFERENCES task(id))",
       );
     },
     // Set the version. This executes the onCreate function and provides a
@@ -296,7 +296,7 @@ Future<List<Task>> tasks() async {
       description: maps[i]['description'],
       date: maps[i]['date'],
       remindPref: maps[i]['reminderPref'],
-      workloadHours: maps[i]['workloadHours'],
+      workloadMinutues: maps[i]['workloadMinutues'],
       priority: maps[i]['priority'],
       completed: maps[i]['completed'],
     );
@@ -333,7 +333,7 @@ Future<List<Task>> taskForSubtasks(int taskId) async {
       description: maps[i]['description'],
       date: maps[i]['date'],
       remindPref: maps[i]['reminderPref'],
-      workloadHours: maps[i]['workloadHours'],
+      workloadMinutues: maps[i]['workloadMinutues'],
       priority: maps[i]['priority'],
       completed: maps[i]['completed'],
     );
