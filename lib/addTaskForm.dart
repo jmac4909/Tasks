@@ -148,15 +148,21 @@ class _AddTaskFormState extends State<AddTaskForm> {
                 ),
                 (subTask
                     ? FutureBuilder(
-                        future: tasks(),
+                        future: taskWithCatAndThingNames(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<FormBuilderFieldOption> opts = [];
                             for (var thing in snapshot.data) {
-                              if (thing.isSubtask != 1) {
+                              if (thing['isSubtask'] != 1) {
                                 opts.add(FormBuilderFieldOption(
-                                  value: thing.id,
-                                  child: Text(thing.title),
+                                  value: thing['id'],
+                                  child: (thing['thingTitle'] != null
+                                      ? Text(
+                                          '${thing['thingTitle']}: ${thing['title']}')
+                                      : (thing['catTitle'] != null
+                                          ? Text(
+                                              '${thing['catTitle']}: ${thing['title']}')
+                                          : Text('${thing['title']}'))),
                                 ));
                               }
                             }
@@ -269,7 +275,6 @@ class _AddTaskFormState extends State<AddTaskForm> {
                       onPressed: () {
                         if (_fbKey.currentState.saveAndValidate()) {
                           var value = _fbKey.currentState.value;
-                          print(value);
                           insertTask(Task(
                             categoryId: value['category_attached'],
                             thingId: value['thing_attached'],

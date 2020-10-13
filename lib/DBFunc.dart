@@ -303,6 +303,27 @@ Future<List<Task>> tasks() async {
   });
 }
 
+Future<List<Map>> taskWithCatAndThingNames() async {
+  // Get a reference to the database.
+  final Database db = await openDatabase(
+    // Set the path to the database. Note: Using the `join` function from the
+    // `path` package is best practice to ensure the path is correctly
+    // constructed for each platform.
+    join(await getDatabasesPath(), 'task_database.db'),
+    // Set the version. This executes the onCreate function and provides a
+    // path to perform database upgrades and downgrades.
+    version: 1,
+  );
+  // Query the table for all The Dogs.
+  final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT t.*, c.title AS catTitle, th.title AS thingTitle  FROM "task" t LEFT JOIN "category" c ON t.categoryId=c.id LEFT JOIN "thing" th ON t.thingId=th.id');
+  // SELECT a.* FROM actor a;
+  // db.rawQuery('SELECT * FROM "table"');
+
+  // Convert the List<Map<String, dynamic> into a List<Dog>.
+  return maps;
+}
+
 Future<List<Task>> taskForSubtasks(int taskId) async {
   // Get a reference to the database.
   final Database db = await openDatabase(
