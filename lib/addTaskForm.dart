@@ -6,7 +6,8 @@ import 'DBFunc.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AddTaskForm extends StatefulWidget {
-  AddTaskForm({Key key}) : super(key: key);
+  final Task initWithSubtask;
+  AddTaskForm({Key key, this.initWithSubtask}) : super(key: key);
 
   @override
   _AddTaskFormState createState() => _AddTaskFormState();
@@ -17,13 +18,32 @@ class _AddTaskFormState extends State<AddTaskForm> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   int categorySelected;
   int thingSelected;
+  bool onlyCheckForTaskOnce = false;
   bool subTask = false;
   bool showDate = false;
   bool showWorkload = false;
   @override
   Widget build(BuildContext context) {
+    // If param given, need to init with values. Adding subtask
+    // Only do it once or else may overwrite user values
+    if (widget.initWithSubtask != null) {
+      if (!onlyCheckForTaskOnce) {
+        subTask = widget.initWithSubtask != null;
+        categorySelected = widget.initWithSubtask.categoryId;
+        onlyCheckForTaskOnce = true;
+      }
+    }
+
     return Material(
       child: FormBuilder(
+        initialValue: (widget.initWithSubtask != null
+            ? {
+                'category_attached': widget.initWithSubtask.categoryId,
+                'thing_attached': widget.initWithSubtask.thingId,
+                'task_options': ['subtask_option'],
+                'parentTaskId': widget.initWithSubtask.id,
+              }
+            : {}),
         key: _fbKey,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -106,6 +126,11 @@ class _AddTaskFormState extends State<AddTaskForm> {
                   onChanged: (value) {
                     setState(() {
                       subTask = value.contains('subtask_option');
+                      // Set parent to null when unselecting subtask
+                      if (!subTask) {
+                        _fbKey.currentState
+                            .setAttributeValue('parentTaskId', null);
+                      }
                       showDate = value.contains('date_option');
                       showWorkload = value.contains('workload_option');
                     });

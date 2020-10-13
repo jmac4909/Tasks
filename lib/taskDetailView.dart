@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 import 'DBFunc.dart';
+import 'addTaskForm.dart';
 
 class TaskDetailRoute extends StatefulWidget {
   @override
@@ -59,7 +60,15 @@ class _TaskDetailRouteState extends State<TaskDetailRoute> {
             icon: const Icon(Icons.add),
             tooltip: 'Add',
             onPressed: () {
-              print('Add....What?');
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AddTaskForm(initWithSubtask: selectedTask);
+                },
+              ).then((value) => {
+                    // Updates view
+                    setState(() {})
+                  });
             },
           ),
         ],
