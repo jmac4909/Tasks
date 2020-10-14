@@ -152,17 +152,17 @@ class _AddTaskFormState extends State<AddTaskForm> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<FormBuilderFieldOption> opts = [];
-                            for (var thing in snapshot.data) {
-                              if (thing['isSubtask'] != 1) {
+                            for (Task thing in snapshot.data) {
+                              if (thing.isSubtask != 1) {
                                 opts.add(FormBuilderFieldOption(
-                                  value: thing['id'],
-                                  child: (thing['thingTitle'] != null
+                                  value: thing.id,
+                                  child: (thing.data['thingTitle'] != null
                                       ? Text(
-                                          '${thing['thingTitle']}: ${thing['title']}')
-                                      : (thing['catTitle'] != null
+                                          '${thing.data['thingTitle']}: ${thing.title}')
+                                      : (thing.data['catTitle'] != null
                                           ? Text(
-                                              '${thing['catTitle']}: ${thing['title']}')
-                                          : Text('${thing['title']}'))),
+                                              '${thing.data['catTitle']}: ${thing.title}')
+                                          : Text('${thing.title}'))),
                                 ));
                               }
                             }

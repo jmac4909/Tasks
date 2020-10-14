@@ -53,6 +53,7 @@ class Task {
   final double workloadMinutues;
   final int priority;
   int completed;
+  var data = {};
 
   Task({
     this.id,
@@ -67,6 +68,7 @@ class Task {
     this.workloadMinutues,
     this.priority,
     this.completed,
+    this.data,
   });
 
   Map<String, dynamic> toMap() {
@@ -303,7 +305,7 @@ Future<List<Task>> tasks() async {
   });
 }
 
-Future<List<Map>> taskWithCatAndThingNames() async {
+Future<List<Task>> taskWithCatAndThingNames() async {
   // Get a reference to the database.
   final Database db = await openDatabase(
     // Set the path to the database. Note: Using the `join` function from the
@@ -321,7 +323,26 @@ Future<List<Map>> taskWithCatAndThingNames() async {
   // db.rawQuery('SELECT * FROM "table"');
 
   // Convert the List<Map<String, dynamic> into a List<Dog>.
-  return maps;
+  return List.generate(maps.length, (i) {
+    return Task(
+      id: maps[i]['id'],
+      categoryId: maps[i]['categoryId'],
+      thingId: maps[i]['thingId'],
+      parentTaskId: maps[i]['parentTaskId'],
+      isSubtask: maps[i]['isSubtask'],
+      title: maps[i]['title'],
+      description: maps[i]['description'],
+      date: maps[i]['date'],
+      remindPref: maps[i]['reminderPref'],
+      workloadMinutues: maps[i]['workloadMinutues'],
+      priority: maps[i]['priority'],
+      completed: maps[i]['completed'],
+      data: {
+        'thingTitle': maps[i]['thingTitle'],
+        'catTitle': maps[i]['catTitle'],
+      },
+    );
+  });
 }
 
 Future<List<Task>> taskForSubtasks(int taskId) async {
